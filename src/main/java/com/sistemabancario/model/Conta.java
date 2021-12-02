@@ -1,5 +1,6 @@
 package com.sistemabancario.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -60,7 +61,7 @@ public class Conta implements Cadastro {
      * conta usando qualquer um dos construtores, a lista de movimentações não é
      * nula, chamando o método {@link #getMovimentacoes()}. (R04)
      */
-    private List<Movimentacao> movimentacoes;
+    private List<Movimentacao> movimentacoes = new ArrayList<Movimentacao>();
 
     public Conta() {
         // TODO: Você precisa implementar este método
@@ -164,6 +165,12 @@ public class Conta implements Cadastro {
     }
 
     public void setNumero(String numero) {
+        if(numero == null){
+            throw new NullPointerException("Número inválido, não pode ser nulo");
+        }
+        if(!numero.matches("\\d{5}-\\d")){
+            throw new IllegalArgumentException("Número inválido, deve estar no formato 99999-9");
+        }
         this.numero = numero;
     }
 
@@ -192,6 +199,9 @@ public class Conta implements Cadastro {
     }
 
     public void setLimite(double limite) {
+        if(limite > 0 && !especial){
+            throw new IllegalStateException("Somente contas especiais podem ter limite");
+        }
         this.limite = limite;
     }
 }
